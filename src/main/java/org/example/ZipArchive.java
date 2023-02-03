@@ -6,6 +6,8 @@ import io.github.cdimascio.dotenv.Dotenv;
 import lombok.Getter;
 import lombok.Setter;
 import org.fusesource.jansi.Ansi;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.*;
 import java.time.LocalDateTime;
@@ -45,6 +47,7 @@ public class ZipArchive {
         }
     }
 
+    @Nullable
     private static List<String> loadExcludes(String filePath) {
         try {
             FileReader reader = new FileReader(filePath);
@@ -58,7 +61,7 @@ public class ZipArchive {
         return null;
     }
 
-    private static void saveExcludes(List<String> excludes) {
+    private static void saveExcludes(@NotNull List<String> excludes) {
         excludes.add("modules");
         excludes.add("target");
         excludes.add(".idea");
@@ -97,7 +100,7 @@ public class ZipArchive {
             }
         }
 
-        public void searcherPath(File path, String mainPath) throws InterruptedException {
+        public void searcherPath(@NotNull File path, String mainPath) throws InterruptedException {
             String filePath;
             File[] paths = path.listFiles();
             if (paths != null) {
@@ -164,7 +167,7 @@ public class ZipArchive {
         }
     }
 
-    public static boolean isFileModifyDateBetweenDates(String filePath, LocalDateTime beginDate, LocalDateTime endDate) {
+    public static boolean isFileModifyDateBetweenDates(String filePath, @NotNull LocalDateTime beginDate, LocalDateTime endDate) {
         LocalDateTime lastModifyDate = LocalDateTime.ofInstant(new Date(new File(filePath).lastModified()).toInstant(), ZoneId.systemDefault());
         return (beginDate.isBefore(lastModifyDate) && endDate.isAfter(lastModifyDate));
     }
@@ -178,7 +181,7 @@ public class ZipArchive {
         Long fileSpace;
         Long fileZipSpace;
 
-        public compressToZipDirectory(String dir) {
+        public compressToZipDirectory(@NotNull String dir) {
             if (dir.isBlank()) System.out.println("Brak katalogów do kompresji");
             try {
                 this.fileSpace = 0L;
@@ -194,7 +197,7 @@ public class ZipArchive {
             }
         }
 
-        public void addDirectory(File baseDir, File dir) throws IOException {
+        public void addDirectory(File baseDir, @NotNull File dir) throws IOException {
             File[] files = dir.listFiles();
             assert files != null;
             for (File file : files) {
