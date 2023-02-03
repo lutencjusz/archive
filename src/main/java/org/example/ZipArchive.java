@@ -26,17 +26,17 @@ public class ZipArchive {
     private static final int MAX_QUEUE = 5;
     private static final int WEEKS_NUMBER = 2;
     private static final Dotenv dotenv = Dotenv.configure()
-            .directory("src/test/resources/.env")
+            .directory(System.getProperty("user.dir") + "\\.env")
             .ignoreIfMalformed()
             .ignoreIfMissing()
             .load();
     private static final String PREFIX_ZIPPED_FILES = dotenv.get("PREFIX_ZIPPED_FILES");
-    private static final File MAIN_PATH = new File(Objects.requireNonNull(dotenv.get("MAIN_PATH")));
+    private static final File MAIN_PATH = new File(dotenv.get("MAIN_PATH"));
     private static final String END_FILE = "end";
 
     public static void main(String[] args) {
 
-        excludedPathAndFiles = loadExcludes(dotenv.get("EXCLUDES"));
+        excludedPathAndFiles = loadExcludes(dotenv.get("EXCLUDED_PATHS_FILE"));
 
         BlockingQueue<String> queue = new ArrayBlockingQueue<>(MAX_QUEUE);
         new Thread(new SearcherFiles(MAIN_PATH, queue)).start();
