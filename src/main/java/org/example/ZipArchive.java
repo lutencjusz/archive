@@ -28,7 +28,7 @@ public class ZipArchive {
     private static final int MAX_QUEUE = 5;
     private static final int WEEKS_NUMBER = 2;
     private static final Dotenv dotenv = Dotenv.configure()
-            .directory(System.getProperty("user.dir") + "\\.env")
+            .directory(System.getProperty("user.dir") + System.getProperty("file.separator") + ".env")
             .ignoreIfMalformed()
             .ignoreIfMissing()
             .load();
