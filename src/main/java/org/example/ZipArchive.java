@@ -2,6 +2,7 @@ package org.example;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import io.github.cdimascio.dotenv.Dotenv;
 import lombok.Getter;
 import lombok.Setter;
 import org.fusesource.jansi.Ansi;
@@ -21,16 +22,23 @@ public class ZipArchive {
     static DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyyMMdd");
     static DateTimeFormatter showDateTime = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
     static LocalDateTime today = LocalDateTime.now();
-    private static final File MAIN_PATH = new File("C:\\Data\\Java");
-    private static final String PREFIX_ZIPPED_FILES = "C:\\Users\\micha\\Dropbox\\backup aplikacji\\";
     private static final Set<String> pathSet = new HashSet<>();
     private static final int MAX_QUEUE = 5;
     private static final int WEEKS_NUMBER = 2;
 
+    private static final Dotenv dotenv = Dotenv.configure()
+            .directory("src/test/resources/.env")
+            .ignoreIfMalformed()
+            .ignoreIfMissing()
+            .load();
+
+    private static final String PREFIX_ZIPPED_FILES = dotenv.get("PREFIX_ZIPPED_FILES");
+    private static final File MAIN_PATH = new File(Objects.requireNonNull(dotenv.get("MAIN_PATH")));
 
     private static final String END_FILE = "end";
 
     public static void main(String[] args) {
+
 
         excludedPathAndFiles = loadExcludes("C:\\Data\\Java\\Archive\\excludes.json");
 
@@ -96,7 +104,7 @@ public class ZipArchive {
         public void searcherPath(File path, String mainPath) throws InterruptedException {
             String filePath;
             File[] paths = path.listFiles();
-            if (paths != null && paths.length > 0) {
+            if (paths != null) {
                 for (File file : paths) {
                     filePath = mainPath.isEmpty() ? file.getPath() : mainPath;
                     if (file.isDirectory()) {
