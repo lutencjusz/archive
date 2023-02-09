@@ -33,7 +33,7 @@ public class ZipArchive {
             .ignoreIfMissing()
             .load();
     private static final String PREFIX_ZIPPED_FILES = dotenv.get("PREFIX_ZIPPED_FILES");
-    private static final File MAIN_PATH = new File(dotenv.get("MAIN_PATH"));
+    private static final File MAIN_PATH = new File(Objects.requireNonNull(dotenv.get("MAIN_PATH")));
     private static final String END_FILE = "end";
 
     public static void main(String[] args) {
