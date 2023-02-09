@@ -9,11 +9,13 @@ import org.fusesource.jansi.Ansi;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.awt.*;
 import java.io.*;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.zip.ZipEntry;
@@ -36,7 +38,9 @@ public class ZipArchive {
     private static final File MAIN_PATH = new File(Objects.requireNonNull(dotenv.get("MAIN_PATH")));
     private static final String END_FILE = "end";
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws AWTException {
+
+        Robot robot = new Robot();
 
         excludedPathAndFiles = loadExcludes(dotenv.get("EXCLUDED_PATHS_FILE"));
 
