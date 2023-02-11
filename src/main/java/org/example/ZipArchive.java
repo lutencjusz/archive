@@ -28,7 +28,7 @@ public class ZipArchive {
     static LocalDateTime today = LocalDateTime.now();
     private static final Set<String> pathSet = new HashSet<>();
     private static final int MAX_QUEUE = 5;
-    private static final int WEEKS_NUMBER = 2;
+    private static final int HOURS_NUMBER = 2;
     private static final Dotenv dotenv = Dotenv.configure()
             .directory(System.getProperty("user.dir") + System.getProperty("file.separator") + ".env")
             .ignoreIfMalformed()
@@ -121,7 +121,7 @@ public class ZipArchive {
                                 break;
                             }
                         }
-                        if (!isPathFound && isFileModifyDateBetweenDates(file.getPath(), today.minusDays(WEEKS_NUMBER), today)) {
+                        if (!isPathFound && isFileModifyDateBetweenDates(file.getPath(), today.minusHours(HOURS_NUMBER), today)) {
 //                            System.out.println("Zmodyfikowany plik: '" + file.getPath() + "'");
                             if (!pathSet.contains(filePath)) {
                                 System.out.println(Ansi.ansi().fg(Ansi.Color.YELLOW).a("Zmodyfikowany plik '" + file.getPath() + "' "
