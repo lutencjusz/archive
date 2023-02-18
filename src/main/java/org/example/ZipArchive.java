@@ -24,8 +24,8 @@ public class ZipArchive {
     static DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyyMMdd");
     static DateTimeFormatter showDateTime = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
     static LocalDateTime today = LocalDateTime.now();
-    private static final int HOURS_NUMBER = 2;
-    static LocalDateTime beforeDate = today.minusHours(HOURS_NUMBER);
+    private static final int MODIFIED_BEFORE_HOURS = 2;
+    static LocalDateTime beforeDate = today.minusHours(MODIFIED_BEFORE_HOURS);
     private static final Set<String> pathSet = new HashSet<>();
     private static final int MAX_QUEUE = 5;
     private static final Dotenv dotenv = Dotenv.configure()
@@ -39,7 +39,7 @@ public class ZipArchive {
 
     public static void main(String[] args) {
 
-        System.out.println(Ansi.ansi().fg(Ansi.Color.BLUE).a("Wyszukuje pliki późniejsze niż '" + beforeDate.format(showDateTime) + "'").reset());
+        System.out.println(Ansi.ansi().fg(Ansi.Color.BLUE).a("Wyszukuje pliki zmodyfikowane później niż '" + beforeDate.format(showDateTime) + "'").reset());
 
         excludedPathAndFiles = loadExcludes(dotenv.get("EXCLUDED_PATHS_FILE"));
 
