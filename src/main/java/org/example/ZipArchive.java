@@ -9,13 +9,11 @@ import org.fusesource.jansi.Ansi;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.awt.*;
 import java.io.*;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
-import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.zip.ZipEntry;
@@ -26,9 +24,10 @@ public class ZipArchive {
     static DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyyMMdd");
     static DateTimeFormatter showDateTime = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
     static LocalDateTime today = LocalDateTime.now();
+    private static final int HOURS_NUMBER = 2;
+    static LocalDateTime beforeDate = today.minusHours(HOURS_NUMBER);
     private static final Set<String> pathSet = new HashSet<>();
     private static final int MAX_QUEUE = 5;
-    private static final int HOURS_NUMBER = 2;
     private static final Dotenv dotenv = Dotenv.configure()
             .directory(System.getProperty("user.dir") + System.getProperty("file.separator") + ".env")
             .ignoreIfMalformed()
@@ -38,9 +37,9 @@ public class ZipArchive {
     private static final File MAIN_PATH = new File(Objects.requireNonNull(dotenv.get("MAIN_PATH")));
     private static final String END_FILE = "end";
 
-    public static void main(String[] args) throws AWTException {
+    public static void main(String[] args) {
 
-        Robot robot = new Robot();
+        System.out.println(Ansi.ansi().fg(Ansi.Color.BLUE).a("Wyszukuje pliki późniejsze niż '" + beforeDate.format(showDateTime) + "'").reset());
 
         excludedPathAndFiles = loadExcludes(dotenv.get("EXCLUDED_PATHS_FILE"));
 
@@ -121,7 +120,7 @@ public class ZipArchive {
                                 break;
                             }
                         }
-                        if (!isPathFound && isFileModifyDateBetweenDates(file.getPath(), today.minusHours(HOURS_NUMBER), today)) {
+                        if (!isPathFound && isFileModifyDateBetweenDates(file.getPath(), beforeDate, today)) {
 //                            System.out.println("Zmodyfikowany plik: '" + file.getPath() + "'");
                             if (!pathSet.contains(filePath)) {
                                 System.out.println(Ansi.ansi().fg(Ansi.Color.YELLOW).a("Zmodyfikowany plik '" + file.getPath() + "' "
