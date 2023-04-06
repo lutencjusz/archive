@@ -64,6 +64,11 @@ public class ZipArchive {
         return null;
     }
 
+    /**
+     * Dodaje predefiniowane wartości do przekazanej listy excludes, konwertuje listę na format JSON, a następnie zapisuje wynikowy ciąg znaków JSON do pliku o nazwie "excludes.json".
+     *
+     * @param excludes - lista ścieżek i plików do wykluczenia z przeszukiwania
+     */
     private static void saveExcludes(@NotNull List<String> excludes) {
         excludes.add("modules");
         excludes.add("target");
@@ -103,6 +108,14 @@ public class ZipArchive {
             }
         }
 
+        /**
+         * Przeszukuje rekurencyjnie katalogi wskazane przez argument 'path', szukając plików zmodyfikowanych między zadanymi datami,
+         * które nie należą do wykluczonych ścieżek, i dodaje unikalne zmodyfikowane pliki do kolejki kompresji.
+         *
+         * @param path     - ścieżka do pliku aktualnie przeszukiwanego
+         * @param mainPath - główna ścieżka przeznaczona do zapisu w pliku zip
+         * @throws InterruptedException - wyjątek wątku
+         */
         public void searcherPath(@NotNull File path, String mainPath) throws InterruptedException {
             String filePath;
             File[] paths = path.listFiles();
@@ -146,6 +159,9 @@ public class ZipArchive {
         }
 
 
+        /**
+         * wyszukuje i kompresuje pliki z kolejki aż do napotkania sygnału zakończenia, jednocześnie wypisując informacje podsumowujące kompresję.
+         */
         @Override
         public void run() {
             try {
@@ -170,6 +186,16 @@ public class ZipArchive {
         }
     }
 
+    /**
+     * Sprawdza, czy plik został zmodyfikowany między podanymi datami.
+     * Jeśli data końcowa jest pusta, sprawdza czy plik został zmodyfikowany po podanej dacie początkowej.
+     * Jeśli data początkowa jest pusta, sprawdza czy plik został zmodyfikowany przed podaną datą końcową.
+     *
+     * @param filePath  - ścieżka do pliku
+     * @param beginDate - data początkowa
+     * @param endDate   - data końcowa
+     * @return - true jeśli plik został zmodyfikowany między podanymi datami, false w przeciwnym wypadku
+     */
     public static boolean isFileModifyDateBetweenDates(String filePath, @NotNull LocalDateTime beginDate, LocalDateTime endDate) {
         LocalDateTime lastModifyDate = LocalDateTime.ofInstant(new Date(new File(filePath).lastModified()).toInstant(), ZoneId.systemDefault());
         return (beginDate.isBefore(lastModifyDate) && endDate.isAfter(lastModifyDate));
