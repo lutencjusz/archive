@@ -1,4 +1,4 @@
 @echo off
 chcp 65001
 "C:\Program Files\Java\jdk-19.0.1\bin\java.exe" "-javaagent:C:\Program Files\JetBrains\IntelliJ IDEA 231.6471.13\lib\idea_rt.jar=61903:C:\Program Files\JetBrains\IntelliJ IDEA 231.6471.13\bin" -Dfile.encoding=UTF-8 -Dsun.stdout.encoding=UTF-8 -Dsun.stderr.encoding=UTF-8 -classpath C:\Data\Java\Archive\target\classes;C:\Users\micha\.m2\repository\org\projectlombok\lombok\1.18.10\lombok-1.18.10.jar;C:\Users\micha\.m2\repository\com\google\code\gson\gson\2.9.0\gson-2.9.0.jar;C:\Users\micha\.m2\repository\org\fusesource\jansi\jansi\2.4.0\jansi-2.4.0.jar;C:\Users\micha\.m2\repository\io\github\cdimascio\java-dotenv\5.2.2\java-dotenv-5.2.2.jar;C:\Users\micha\.m2\repository\org\jetbrains\kotlin\kotlin-stdlib\1.4.0\kotlin-stdlib-1.4.0.jar;C:\Users\micha\.m2\repository\org\jetbrains\kotlin\kotlin-stdlib-common\1.4.0\kotlin-stdlib-common-1.4.0.jar;C:\Users\micha\.m2\repository\org\jetbrains\annotations\13.0\annotations-13.0.jar org.example.ZipArchive
-timeout 5 && echo "backup zrobiony"
+timeout 30 && echo "backup zrobiony"
